@@ -1,0 +1,9 @@
+{
+ "manifest_version": 3,
+ "name": "AB Test Calculator",
+ "version": "1.0",
+ "description": "Web siteleri için AB testi hesaplama aracı",
+ "action": {
+   "default_popup": "popup.html"
+ }
+}

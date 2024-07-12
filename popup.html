@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AB Test Calculator</title>
+  <style>
+    /* Basit stil düzenlemeleri */
+    body {
+      font-family: sans-serif;
+      width: 350px;
+    }
+    input[type="number"] {
+      width: 60px;
+    }
+    .variation-row {
+      margin-bottom: 10px;
+    }
+    .result {
+      font-weight: bold;
+    }
+    .confidence-interval {
+      font-size: 0.9em;
+    }
+    .green {
+      color: green;
+    }
+    .red {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>AB Test Calculator</h1>
+  <div id="variations">
+    <div class="variation-row">
+      <label for="original-impressions">Orjinal - Gösterim:</label>
+      <input type="number" id="original-impressions" value="0">
+      <label for="original-conversions">Dönüşüm:</label>
+      <input type="number" id="original-conversions" value="0">
+      <span class="result" id="original-cr">-</span>
+    </div>
+    <div class="variation-row">
+      <label for="variation-1-impressions">Varyasyon 1 - Gösterim:</label>
+      <input type="number" id="variation-1-impressions" value="0">
+      <label for="variation-1-conversions">Dönüşüm:</label>
+      <input type="number" id="variation-1-conversions" value="0">
+      <span class="result" id="variation-1-cr">-</span>
+      <span class="result" id="variation-1-lift">-</span>
+    </div>
+  </div>
+  <button id="add-variation">Varyasyon Ekle</button>
+  <br><br>
+  <label for="test-days">Test Süresi (Gün):</label>
+  <input type="number" id="test-days" value="1">
+  <br>
+  <div class="confidence-interval">
+    Güven Aralığı: <span id="confidence-interval">-</span>
+  </div>
+  <div class="confidence-interval">
+    Gerekli Gün Sayısı: <span id="required-days">-</span>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

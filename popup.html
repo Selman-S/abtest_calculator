@@ -1,63 +1,602 @@
-<!DOCTYPE html>
-<html>
+
+
+<!doctype html>
+<html lang="en">
+
 <head>
-  <title>AB Test Calculator</title>
-  <style>
-    /* Basit stil düzenlemeleri */
-    body {
-      font-family: sans-serif;
-      width: 350px;
-    }
-    input[type="number"] {
-      width: 60px;
-    }
-    .variation-row {
-      margin-bottom: 10px;
-    }
-    .result {
-      font-weight: bold;
-    }
-    .confidence-interval {
-      font-size: 0.9em;
-    }
-    .green {
-      color: green;
-    }
-    .red {
-      color: red;
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>A/B Test Calculator, Statistical Power & Significance</title>
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,blackitalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.1/grids-responsive-min.css">
+    <link rel="stylesheet" href="css/style.css?v=673917459028">
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.2.11/js/iframeResizer.contentWindow.min.js"></script>
+    
+    <script src="https://unpkg.com/tippy.js@2.5.2/dist/tippy.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jstat/1/jstat.min.js"></script> <!-- both needed -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="js/scripts.min.js?v=393052146400"></script>
+
+
 </head>
-<body>
-  <h1>AB Test Calculator</h1>
-  <div id="variations">
-    <div class="variation-row">
-      <label for="original-impressions">Orjinal - Gösterim:</label>
-      <input type="number" id="original-impressions" value="0">
-      <label for="original-conversions">Dönüşüm:</label>
-      <input type="number" id="original-conversions" value="0">
-      <span class="result" id="original-cr">-</span>
+
+<body class=" test-analysis">
+    
+
+
+    <header class="main-header">
+        <div class="wrapper">
+            <h2>A/B Test Calculator</h2>
+           
+        </div>
+    </header>
+
+
+
+    <main>
+        <div class="wrapper">
+            <section id="toggle-section">
+                <div id="toggle-outer-container">
+                    <div class="inner-container">
+                        <div class="toggle">
+                            <p>Pre-Test Analysis</p>
+                        </div>
+                        <div class="toggle">
+                            <p>Test Analysis</p>
+                        </div>
+                    </div>
+                    <div class="inner-container" id='toggle-container'>
+                        <div class="toggle">
+                            <p>Pre-Test Analysis</p>
+                        </div>
+                        <div class="toggle">
+                            <p>Test Analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+      
+
+           
+            <div id="tab-1">
+
+                <section id="test-duration-container">
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-md-1-6 breadcrumb">
+                            <span class="breadcrumb-number" id="bc-n-1">1</span>
+                            <span class="breadcrumb-text">How long has the test been running?</span>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-5-6" style="margin-bottom: 50px;">
+                            <div class="shadows">
+                                <div class="pure-g">
+                                    <div class="white-bg pure-u-1 pure-u-md-2-5">
+                                        <div class="standard-padding">
+                                            <h4>Test duration</h4>
+                                            <div class="pure-g">
+                                                <div class="pure-u-1 pure-u-md-1-2">
+                                                    <div class="single-input-container">
+                                                        <label for="test-duration">Test duration (days)</label><span class="tooltip" title="Minimum 1 business cycle (e.g. 1 week/7days), ideally 2."></span>
+                                                        <span class="input-container"><input id="test-duration" type="text"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="pure-u-1 pure-u-md-1-2 hidden">
+                                                    <div class="single-input-container">
+                                                        <label for="traffic-percent">Percent of traffic in test</label><span class="tooltip" title="What percentage of traffic is the test exposed to? Including control and all variants."></span>
+                                                        <span class="input-container"><input id="traffic-percent" type="text" value="100"><span class="secondary-label">%</span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </diV>
+                                    <div class="blue-bg pure-u-1 pure-u-md-3-5">
+                                        <div class="results-container standard-padding results-top-padding">
+                                            <div class="result-label">Additional days needed<span class="tooltip" title="If indicated, the number of additional days that is needed to run the test considering the existing CR, variant lift, and sample size."></span></div>
+                                            <div class="result-value roi-contribution" id="additional-days-needed">---</div>
+                                            <div class="result-value hidden" id="sessions-needed">---</div>
+                                            <div class="result-value hidden" id="traffic-through-test">---</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="variations-section-container">
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-md-1-6 breadcrumb">
+                            <span class="breadcrumb-number">2</span>
+                            <span class="breadcrumb-text">Test data</span>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-5-6" id="variations-container">
+
+                            <div class="shadows single-variation control-row">
+                                <div class="pure-g">
+                                    <div class="white-bg pure-u-1 pure-u-md-2-5">
+                                        <div class="standard-padding">
+                                            <h4>Control</h4>
+                                            <span class="sample-size-needed-note hidden"><i class="alert-image">!</i><span>See below for needed sample size and test duration</span></span>
+                                            <div class="pure-g">
+                                                <div class="pure-u-1 pure-u-md-1-2">
+                                                    <div class="single-input-container">
+                                                        <label for="v-0-sessions">Users or sessions</label>
+                                                        <span class="input-container"><input id="v-0-sessions" type="text"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="pure-u-1 pure-u-md-1-2">
+                                                    <div class="single-input-container">
+                                                        <label for="v-0-conversions">Conversions</label>
+                                                        <span class="input-container"><input id="v-0-conversions" type="text"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </diV>
+                                    <div class="blue-bg pure-u-1 pure-u-md-3-5">
+                                        <div class="results-container standard-padding results-top-padding">
+                                            <div class="result-label">Conversion rate</div>
+                                            <div class="result-value grey-text" id="v-0-cr">---</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="shadows single-variation">
+                                <div class="pure-g">
+                                    <div class="white-bg pure-u-1 pure-u-md-2-5">
+                                        <div class="standard-padding">
+                                            <h4>Variation 1</h4>
+                                            <span class="sample-size-needed-note hidden"><i class="alert-image">!</i><span>See below for needed sample size and test duration</span></span>
+                                            <div class="pure-g">
+                                                <div class="pure-u-1 pure-u-md-1-2">
+                                                    <div class="single-input-container">
+                                                        <label for="v-1-sessions">Users or sessions</label>
+                                                        <span class="input-container"><input id="v-1-sessions" type="text"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="pure-u-1 pure-u-md-1-2">
+                                                    <div class="single-input-container">
+                                                        <label for="v-1-conversions">Conversions</label>
+                                                        <span class="input-container"><input id="v-1-conversions" type="text"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </diV>
+                                    <div class="blue-bg pure-u-1 pure-u-md-3-5">
+                                        <div class="results-container standard-padding results-top-padding pure-g">
+                                            <div class="pure-u-1 pure-u-md-1-4">
+                                                <div class="result-label">Conversion rate</div>
+                                                <div class="result-value" id="v-1-cr">---</div>
+                                            </div>
+                                            <div class="pure-u-1 pure-u-md-1-4">
+                                                <div class="result-label">Lift</div>
+                                                <div class="result-value" id="v-1-lift">---</div>
+                                            </div>
+                                            <div class="pure-u-1 pure-u-md-1-4">
+                                                <div class="result-label">Extra transactions<span class="tooltip" title="(CR_original*Monthly_Traffic)-(CR_variant*Monthly_Traffic)"></span></div>
+                                                <div class="result-value" id="extra-transactions-1">---</div>
+                                            </div>
+                                            <div class="pure-u-1 pure-u-md-1-4">
+                                                <div class="result-label">Monthly monetary contribution<span class="tooltip" title="AOV*Extra_Transactions"></span></div>
+                                                <div class="result-value" id="roi-contribution-1">---</div>
+                                            </div>
+                                        </div>
+                                        <div class="p-value-container">
+                                            <div class="p-value-left">
+                                                <div class="result-label">P-value</div>
+                                                <div class="result-value roi-contribution grey-text" id="p-value-1">---</div>
+                                            </div>
+                                            <div class="significant-text" id="significant-text-1"></div>
+                                        </div>
+                                        <span class="remove-variation">×</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="srm-row pure-u-1 pure-u-md-1-6 hidden"></div>
+                        <div class="srm-row srm-alert-container pure-u-1 pure-u-md-5-6 hidden">
+                            <span>SRM-alert: if you intended to have a 50% / 50% split, we measured a possible <a href="https://speero.com/post/a-b-test-calculators-and-the-features-that-matter" target="_blank">Sample Ratio Mismatch (SRM)</a>.</br>Please check your traffic distribution.</span>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-1-6"></div>
+                        <div class="add-variation-container pure-u-1 pure-u-md-5-6">
+                            <a class="button add-variation-button" id="add-variation"><span>+</span> Add Variant</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="features" style="margin-top: 64px; margin-bottom: 64px;">
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-md-1-6 breadcrumb">
+                            <span class="breadcrumb-number">3</span>
+                            <span class="breadcrumb-text">Test statistic details and sample size and duration calculators (unlock from test data to use as stand alone tools)</span>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-5-6">
+                            <div class="pure-g">
+
+                                <div class="pure-u-1 pure-u-md-1-4 single-section" id="sample-size-container">
+                                    <div class="single-section-inner shadows white-bg linked">
+                                        <span class="link-icon"></span>
+                                        <div class="standard-padding">
+                                            <h4>Sample size calculator</h4>
+                                            <div class="single-input-container">
+                                                <label for="baseline-cr">Baseline conversion rate (control)</label>
+                                                <span class="input-container"><input id="baseline-cr"><span class="secondary-label">%</span></span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="confidence-level">Confidence level</label><span class="tooltip" title="Probability of getting similar or larger difference when repeating the test."></span>
+                                                <span class="input-container">
+                                                    <!--<span style="display: block; margin-top: 9px; color: #626262;">
+                                                        <input type="radio" name="confidence-radio" value="90"> 90%
+                                                        <input type="radio" name="confidence-radio" value="95" style="margin-left: 36px;" checked="checked"> 95%
+                                                    </span>-->
+                                                    <input type="text" id="confidence-level" value="95"><span class="secondary-label hidden">%</span>
+                                                </span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="statistical-power">Statistical power</label><span class="tooltip" title="Probability of rejecting a null hypothesis, if it is false (not experiencing a false negative - type II error)."></span>
+                                                <span class="input-container"><input type="text" id="statistical-power" value="80"><span class="secondary-label">%</span></span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="cr-lift">Conversion rate lift %</label><span class="tooltip" title="CR taken from variant with largest lift"></span>
+                                                <span class="input-container"><input type="text" id="cr-lift"><span class="secondary-label">%</span></span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="number-of-variations-2">Number of variants</label><span class="tooltip" title="Including control"></span>
+                                                <span class="input-container"><input type="text" id="number-of-variations-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="single-section-inner-lower shadows blue-bg">
+                                        <div class="standard-padding" style="padding-right: 12px;">
+                                            <div class="result-label">Required sample size per variant <span class="tooltip" data-tippy-interactive="true" data-tippy-theme="light rounded" data-tippy-arrow="true" data-tippy-size="large" data-tippy-arrowtransform="scale(2)" data-tippy-animation="fade" data-tippy-distance="15" data-tippy-interactiveborder="20" data-local="true" title="Based on one-tailed test. Note most other online calculator results are based on two-tailed test. <a href='https://cxl.com/blog/one-tailed-vs-two-tailed-tests/' target='_blank' style='color: white;'>Read more here</a>">.</span></div>
+                                            <div class="result-value hidden" id="total-sample-needed">---</div>
+                                            <div class="result-value" id="sample-needed">---</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="uplift-significance-input pure-u-1 pure-u-md-1-4 single-section" id="test-duration-container-2">
+                                    <div class="single-section-inner shadows white-bg linked">
+                                        <span class="link-icon"></span>
+                                        <div class="standard-padding">
+                                            <h4>Duration calculator</h4>
+                                            <!--<div class="single-input-container">
+                                                <label for="test-duration"><i class="alert-image sample-size-needed-image hidden">!</i> Test Duration (days)</label>
+                                                <input type="text" id="test-duration">
+                                            </div>-->
+                                            <div class="single-input-container">
+                                                <label for="baseline-cr-2">Baseline conversion rate (control)</label>
+                                                <span class="input-container"><input type="text" id="baseline-cr-2"><span class="secondary-label">%</span></span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="mde">Minimum detectable effect</label><span class="tooltip" title="The relative minimum improvement over the baseline that can be detected considering the page traffic and conversion rate data provided."></span>
+                                                <span class="input-container"><input type="text" id="mde"><span class="secondary-label">%</span></span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="number-of-variations">Number of variants</label>
+                                                <span class="input-container"><input type="text" id="number-of-variations"></span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="avg-daily-visitors">Number of daily visitors (total)</label>
+                                                <span class="input-container"><input type="text" id="avg-daily-visitors"></span>
+                                            </div>
+                                            <div class="single-input-container hidden">
+                                                <label for="traffic-percent">Percent traffic in test</label><span class="tooltip" title="What percentage of traffic is the test exposed to? Including control and all variants."></span>
+                                                <span class="input-container"><input type="text" id="traffic-percent-2" value="100"><span class="secondary-label">%</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="single-section-inner-lower shadows blue-bg">
+                                        <div class="standard-padding" style="padding-right: 12px;">
+                                            <div class="result-label">How long in total to run the test <span class="tooltip" title="We always recommend at minimum one business cycle, usually one week."></span></div>
+                                            <div class="result-value" id="number-of-days">---</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="uplift-significance-input pure-u-1 pure-u-md-1-4 single-section" id="test-roi-container">
+                                    <div class="single-section-inner shadows white-bg">
+                                        <div class="standard-padding">
+                                            <h4>Monthly monetary contribution based on data above</h4>
+                                            <div class="single-input-container">
+                                                <label for="aov">Average order value of one non-control variant</label>
+                                                <span class="input-container currency-selector-container">
+                                                    <input type="text" id="aov">
+                                                    <select id="currency">
+                                                        <option value="usd">$</option>
+                                                        <option value="eur">€</option>
+                                                        <option value="gbp">£</option>
+                                                        <!--<option value="mex">Mex$</option>
+                                                        <option value="aud">A$</option>-->
+                                                        <option value="ruble">₽</option>
+                                                        <option value="yen">¥</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pure-u-1 pure-u-md-1-4 single-section" id="mde-container">
+                                    <div class="single-section-inner shadows blue-bg">
+                                        <div class="standard-padding">
+                                            <h4>Minimum detectable effect (MDE)<span class="tooltip" title="The minimum which can be reliably detected where reliably refers to the power of the test."></span></h4>
+                                            <div class="mde-rows">
+                                                <div class="mde-row first-row">
+                                                    <span class="mde-row-left">Week</span>
+                                                    <span class="mde-row-right">MDE</span>
+                                                </div>
+                                                <div class="mde-row">
+                                                    <span class="mde-row-left">1</span>
+                                                    <span class="mde-row-right result-value" id="mde-row-1">---</span>
+                                                </div>
+                                                <div class="mde-row">
+                                                    <span class="mde-row-left">2</span>
+                                                    <span class="mde-row-right result-value" id="mde-row-2">---</span>
+                                                </div>
+                                                <div class="mde-row">
+                                                    <span class="mde-row-left">3</span>
+                                                    <span class="mde-row-right result-value" id="mde-row-3">---</span>
+                                                </div>
+                                                <div class="mde-row">
+                                                    <span class="mde-row-left">4</span>
+                                                    <span class="mde-row-right result-value" id="mde-row-4">---</span>
+                                                </div>
+                                                <div class="mde-row">
+                                                    <span class="mde-row-left">5</span>
+                                                    <span class="mde-row-right result-value" id="mde-row-5">---</span>
+                                                </div>
+                                                <div class="mde-row">
+                                                    <span class="mde-row-left">6</span>
+                                                    <span class="mde-row-right result-value" id="mde-row-6">---</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="srm-row pure-u-1 pure-u-md-1-6 hidden"></div>
+                        <div class="srm-row srm-alert-container srm-alert-lower-container pure-u-1 pure-u-md-5-6 hidden">
+                            <span>SRM-alert: if you intended to have a 50% / 50% split, we measured a possible <a href="https://speero.com/post/a-b-test-calculators-and-the-features-that-matter" target="_blank">Sample Ratio Mismatch (SRM)</a>.</br>Please check your traffic distribution.</span>
+                        </div>
+                    </div>
+
+                </section>
+
+                <section class="main-results-container" id="uplift-significance-container">
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-md-1-6 breadcrumb">
+                            <span class="breadcrumb-number" id="bc-n-4">4</span>
+                            <span class="breadcrumb-text">Results</span>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-5-6">
+                            <div class="pure-g results-top-row">
+                                <div class="pure-u-1 pure-u-md-1-2">
+                                    <h4 style="position: relative;top: 10px;">Results</h4>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-2">
+                                    <div class="significance-calculator-method-outer pure-g">
+                                        <span class="pure-u-1 pure-u-md-1-2" style="margin-top:  15px;padding-right: 7px;box-sizing: border-box; font-size: 14px;">Significance calculation method: <span class="tooltip"  data-tippy-interactive="true" data-tippy-theme="light rounded" data-tippy-arrow="true" data-tippy-size="large" data-tippy-arrowtransform="scale(2)" data-tippy-animation="fade" data-tippy-distance="15" data-tippy-interactiveborder="20" data-local="true" title="<a href='https://cxl.com/blog/bayesian-frequentist-ab-testing' target='_blank' style='color: white;'>Bayesian vs Frequentist A/B Testing – What’s the Difference?</a>"></span></span>
+                                        <div class="significance-calculator-method-inner shadows pure-u-1 pure-u-md-1-2">
+                                            <div class="pure-g">
+                                                <div class="single-calculator-method active pure-u-1 pure-u-md-1-2" id="bayesian">Bayesian</div>
+                                                <div class="single-calculator-method pure-u-1 pure-u-md-1-2" id="z-test">Z Test</div>
+                                                <!--<div class="single-calculator-method pure-u-1 pure-u-md-1-3" id="chi-squared">Chi Squared</div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="blue-bg shadows" style="position:  relative;z-index: 1;">
+                                <div class="results-container">
+                                    <div class="graph-outer">
+                                        <div class="single-stat-container bayesian-stats-container active">
+                                            <!--<div id="plot-error"><p>More information is required for the graph</p></div>-->
+                                            <div id="probability-plot"></div>
+                                            <hr>
+                                            <div id="bayesian-plot"></div>
+                                        </div>
+                                        <div class="single-stat-container z-test-stats-container">
+                                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin: 0 auto;display: block;">
+                                                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" style="display:inline-block;margin-right: 20px;" for="one-sided">
+                                                    <input type="radio" id="one-sided" class="mdl-radio__button" name="tails" value="1" checked>
+                                                    <span class="mdl-radio__label">One-sided</span>
+                                                </label>
+                                                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" style="display:inline-block;" for="two-sided">
+                                                    <input type="radio" id="two-sided" class="mdl-radio__button" name="tails" value="2">
+                                                    <span class="mdl-radio__label">Two-sided</span>
+                                                </label>
+                                                <span class="tooltip" title="A two-sided test can detect changes in both directions and therefore requires either a larger sample or a stronger difference. A one-sided test can detect change in one direction (better or worse) only."></span>
+                                            </div>
+                                            <h5 style="margin-bottom:0;">Confidence interval <span class="tooltip" title="The probability of the conversion rate being in the given interval is equal to the chosen confidence level."></span></h5>
+                                            <div id="z-test-plot" style="height: 300px;"></div>
+                                            <div class="chi-squared-result-comments">
+                                                <h2 style="text-align: center;font-size: 32px;">Verdict:</h2>
+                                                <div class="chi-squared-result-comments-inner"></div>
+                                            </div>
+                                        </div>
+                                        <div class="single-stat-container chi-squared-stats-container">
+                                            <h5 style="margin-bottom:0;">Confidence interval <span class="tooltip" title="The probability of the conversion rate being in the given interval is equal to the chosen confidence level."></span></h5>
+                                            <div id="chi-squared-plot" style="height: 300px;"></div>
+                                            <div class="chi-squared-result-comments">
+                                                <h2 style="text-align: center;font-size: 32px;">Verdict:</h2>
+                                                <div class="chi-squared-result-comments-inner"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <div id="tab-2" style="display:none;">
+
+                <section id="t2-test-page-data-container">
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-md-1-6 breadcrumb">
+                            <span class="breadcrumb-number" id="bc-n-2-1">1</span>
+                            <span class="breadcrumb-text">Insert data from the page you want to test</span>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-5-6" style="margin-bottom: 50px;">
+                            <div class="shadows white-bg">
+                                <div class="pure-g">
+                                    <div class="pure-u-1 pure-u-md-7-8">
+                                        <div class="standard-padding">
+                                            <h4>Test page data<span class="tooltip" title="Data from the page you want to test."></span></h4>
+                                            <div class="pure-g">
+                                                <div class="pure-u-1 pure-u-md-1-3">
+                                                    <div class="single-input-container">
+                                                        <label for="t2-weekly-traffic">Weekly traffic (sessions or users)</label>
+                                                        <span class="input-container"><input id="t2-weekly-traffic" type="text"></span>
+                                                        <span class="input-container hidden"><input id="t2-monthly-traffic" type="text"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="pure-u-1 pure-u-md-1-3">
+                                                    <div class="single-input-container">
+                                                        <label for="t2-weekly-conversions">Weekly conversions</label>
+                                                        <span class="input-container"><input id="t2-weekly-conversions" type="text"></span>
+                                                        <span class="input-container hidden"><input id="t2-monthly-conversions" type="text"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="pure-u-1 pure-u-md-1-3">
+                                                    <div class="single-input-container">
+                                                        <label for="t2-num-variants">Number of variants (including control)</label>
+                                                        <span class="input-container"><input id="t2-num-variants" type="number" value="2" min="2" max="11"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </diV>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="t2-results-container">
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-md-1-6 breadcrumb">
+                            <span class="breadcrumb-number" id="bc-n-2-2">2</span>
+                            <span class="breadcrumb-text">Results</span>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-5-6">
+                            <div class="shadows">
+                                <div class="pure-g t2-four-cols">
+                                    <div class="pure-u-1 pure-u-md-1-4 white-bg grey-border-right">
+                                        <div class="standard-padding">
+                                            <h4>CR, confidence level, and power</h4>
+                                            <div class="single-input-container">
+                                                <label for="t2-baseline-cr">Baseline conversion rate (control)</label>
+                                                <span class="input-container"><input id="t2-baseline-cr"><span class="secondary-label">%</span></span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="t2-confidence-level">Confidence level</label><span class="tooltip" title="Probability of getting similar or larger difference when repeating the test."></span>
+                                                <span class="input-container">
+                                                    <span class="input-container">
+                                                        <!--<span style="display: block; margin-top: 9px; color: #626262;">
+                                                            <input type="radio" name="t2-confidence-radio" value="90"> 90%
+                                                            <input type="radio" name="t2-confidence-radio" value="95" style="margin-left: 36px;" checked="checked"> 95%
+                                                        </span>-->
+                                                        <input type="text" id="t2-confidence-level" value="95"><span class="secondary-label hidden">%</span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div class="single-input-container">
+                                                <label for="t2-statistical-power">Statistical power</label><span class="tooltip" title="Probability of rejecting a null hypothesis, if it is false (not experiencing a false negative - type II error)."></span>
+                                                <span class="input-container"><input type="text" id="t2-statistical-power" value="80"><span class="secondary-label">%</span></span>
+                                            </div>
+                                            <div class="single-input-container hidden">
+                                                <label for="cr-lift">Conversion rate lift %</label>
+                                                <span class="input-container"><input type="text" id="cr-lift"><span class="secondary-label">%</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pure-u-1 pure-u-md-1-4 blue-bg grey-border-right">
+                                        <div class="standard-padding" style="padding-bottom: 0;">
+                                            <h4 style="min-height: 103px;">Number of weeks running test</h4>
+                                        </div>
+                                        <div class="t2-lines-container">
+                                            <div class="t2-single-line">1</div>
+                                            <div class="t2-single-line">2</div>
+                                            <div class="t2-single-line">3</div>
+                                            <div class="t2-single-line">4</div>
+                                            <div class="t2-single-line">5</div>
+                                            <div class="t2-single-line">6</div>
+                                        </div>
+                                    </div>
+                                    <div class="pure-u-1 pure-u-md-1-4 blue-bg grey-border-right">
+                                        <div class="standard-padding" style="padding-bottom: 0;">
+                                            <h4>Minimum detectable effect (MDE)<span class="tooltip" title="The minimum which can be reliably detected where reliably refers to the power of the test."></span></h4>
+                                        </div>
+                                        <div class="t2-lines-container">
+                                            <div class="t2-single-line result-value grey-text" id="t2-mde-row-1">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-mde-row-2">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-mde-row-3">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-mde-row-4">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-mde-row-5">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-mde-row-6">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="pure-u-1 pure-u-md-1-4 blue-bg">
+                                        <div class="standard-padding" style="padding-bottom: 0;">
+                                            <h4 style="min-height: 103px;">Visitors per variant</h4>
+                                        </div>
+                                        <div class="t2-lines-container">
+                                            <div class="t2-single-line result-value grey-text" id="t2-vpv-row-1">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-vpv-row-2">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-vpv-row-3">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-vpv-row-4">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-vpv-row-5">---</div>
+                                            <div class="t2-single-line result-value grey-text" id="t2-vpv-row-6">---</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+    <span class="left-line"></span>
+    <span class="left-line-2" style="display: none;"></span>
+
+
+    <div class="pure-g">
+        <div class="pure-u-1 pure-u-md-1-6"></div>
+      
+        <div class="pure-u-1 pure-u-md-1-6">
+            <div class="top-right-navigation">
+                <ul class="header-navigation">
+                  
+                    <li><a href="#" id="print-results"><img src="/img/print.png" width="40">Print</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="variation-row">
-      <label for="variation-1-impressions">Varyasyon 1 - Gösterim:</label>
-      <input type="number" id="variation-1-impressions" value="0">
-      <label for="variation-1-conversions">Dönüşüm:</label>
-      <input type="number" id="variation-1-conversions" value="0">
-      <span class="result" id="variation-1-cr">-</span>
-      <span class="result" id="variation-1-lift">-</span>
-    </div>
-  </div>
-  <button id="add-variation">Varyasyon Ekle</button>
-  <br><br>
-  <label for="test-days">Test Süresi (Gün):</label>
-  <input type="number" id="test-days" value="1">
-  <br>
-  <div class="confidence-interval">
-    Güven Aralığı: <span id="confidence-interval">-</span>
-  </div>
-  <div class="confidence-interval">
-    Gerekli Gün Sayısı: <span id="required-days">-</span>
-  </div>
-  <script src="script.js"></script>
 </body>
+
 </html>

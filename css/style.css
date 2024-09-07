@@ -120,9 +120,9 @@ h3 {
     font-weight: 400;
 }
 h4 {
-    font-size: 23px;
+    font-size: 16px;
     font-weight: 400;
-    margin: 0 0 20px;
+    margin: 0 0 0px;
 }
 a {
     color: #db2532;
@@ -193,15 +193,15 @@ span.left-line-2 {
 .single-input-container input {
     background: #eaf9ff;
     border: 1px solid #80808063;
-    padding: 8px 14px;
-    font-size: 18px;
+    padding: 4px 8px;
+    font-size: 16px;
     font-weight: 300;
     letter-spacing: 1px;
     color: #626262;
     box-sizing: border-box;
-    max-width: 83%;
-    width: 83%;
-    margin-right: 7px;
+    max-width: initial;
+    width: initial;
+    margin-right: 2px;
     border-radius: 3px;
 }
 .single-input-container select {
@@ -278,9 +278,9 @@ span.remove-shareurl:hover {
 
 /* Header */
 
-header.main-header {
+/* header.main-header {
     padding-top: 30px;
-}
+} */
 h1.main-title {
     text-align: center;
     color: black;
@@ -784,8 +784,8 @@ ul.footer-navigation li a {
         margin-bottom: 14px;
     }
     .single-input-container input {
-        max-width: calc(100% - 20px);
-        width: 100%;
+        max-width: inherit;
+        width: inherit;
     }
     /* ABOVE THE FOLD */
     h1.main-title {
